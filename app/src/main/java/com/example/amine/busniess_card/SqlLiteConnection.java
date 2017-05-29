@@ -28,7 +28,7 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER AUTOINCREMENT,"+username+" TEXT PRIMARY KEY,"+password+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT)");
     }
 
     @Override
@@ -37,15 +37,15 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String username , String password , String phone , String adress , String email)
+    public boolean insertData(String username1 , String password1 , String phone1 , String adress1 , String email1)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentVal = new ContentValues();
-        contentVal.put(this.username , username);
-        contentVal.put(this.password , password);
-        contentVal.put(this.phone , phone);
-        contentVal.put(this.adress , adress);
-        contentVal.put(this.email , email);
+        contentVal.put(username , username1);
+        contentVal.put(password , password1);
+        contentVal.put(phone , phone1);
+        contentVal.put(adress , adress1);
+        contentVal.put(email , email1);
         long result = db.insert(TABLE_NAME , null , contentVal);
 
         if(result== -1) {

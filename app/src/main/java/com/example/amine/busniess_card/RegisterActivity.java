@@ -42,15 +42,15 @@ public class RegisterActivity extends Activity {
                         Toast.makeText(RegisterActivity.this, password.getText().toString()+" ? "+ confirmPassord.getText().toString(), Toast.LENGTH_LONG).show();
                        if( password.getText().toString().equals(confirmPassord.getText().toString()) )
                        {
-                           //boolean isInserted = cn.insertData(username.getText().toString(), password.getText().toString(), phone.getText().toString(), adress.getText().toString(), email.getText().toString());
-                           /*if (isInserted == true)
-                           {*/
+                           boolean isInserted = cn.insertData(username.getText().toString(), password.getText().toString(), phone.getText().toString(), adress.getText().toString(), email.getText().toString());
+                           if (isInserted == true)
+                           {
                                 Intent launchContactListActivity = new Intent(RegisterActivity.this, ContactListActivity.class);
                                 startActivity(launchContactListActivity);
                                 Toast.makeText(RegisterActivity.this, "Registred", Toast.LENGTH_LONG).show();
-                           /*}
+                           }
                            else
-                               Toast.makeText(RegisterActivity.this, "Not Registred", Toast.LENGTH_LONG).show();*/
+                               Toast.makeText(RegisterActivity.this, "Not Registred", Toast.LENGTH_LONG).show();
                        }
                        else
                        {

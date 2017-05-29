@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*boolean exist = cn.checkLogin(username.getText().toString() , password.getText().toString());
+                        boolean exist = cn.checkLogin(username.getText().toString() , password.getText().toString());
                         if(exist == true)
-                        {*/
+                        {
                             Intent launchContactListActivity = new Intent(MainActivity.this, ContactListActivity.class);
                             startActivity(launchContactListActivity);
                             Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
-                        /*}
+                        }
                         else
-                            Toast.makeText(MainActivity.this,"Logging Error",Toast.LENGTH_LONG).show();*/
+                            Toast.makeText(MainActivity.this,"Logging Error",Toast.LENGTH_LONG).show();
                     }
                 }
         );
