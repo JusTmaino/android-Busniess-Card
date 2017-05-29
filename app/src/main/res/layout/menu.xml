@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/app"
+        android:background="?android:attr/colorActivatedHighlight">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?android:attr/colorActivatedHighlight"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Busniess Card" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:text="Import Contacts"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp"
+        android:id="@+id/importContacts"
+        android:background="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
+
+    <Button
+        android:text="Edit My Card"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="62dp"
+        android:id="@+id/editMycard"
+        android:background="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
+        android:layout_below="@+id/scanQRcode"
+        android:layout_alignStart="@+id/scanQRcode" />
+
+    <Button
+        android:text="Scan QRCode"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/scanQRcode"
+        android:background="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
+        android:layout_below="@+id/importContacts"
+        android:layout_alignStart="@+id/importContacts"
+        android:layout_marginTop="62dp" />
+</RelativeLayout>
