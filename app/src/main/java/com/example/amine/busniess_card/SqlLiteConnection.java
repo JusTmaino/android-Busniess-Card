@@ -58,14 +58,14 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public boolean checkLogin1(String username , String password)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"' and PASSWORD='"+password+"'",null);
-        if (cursor != null)
+        Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"' AND PASSWORD='"+password+"'",null);
+        if (cursor.getCount() > 0)
             return true;
         else
             return false;
     }
 
-    public boolean checkLogin (String username , String password) {
+    public boolean checkLogin(String username , String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
                 new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,
@@ -75,7 +75,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
                 new String[] { username , password},
                 null, null, null, null);
 
-        if (c != null) {
+        if (c.getCount() > 0) {
             /*c.moveToFirst();
             Card u = new Card(mail, c.getString(0), c.getString(1), c.getString(2));
             u.setAddress(c.getString(3));
