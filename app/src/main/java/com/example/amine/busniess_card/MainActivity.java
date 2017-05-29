@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             Intent launchContactListActivity = new Intent(MainActivity.this, ContactListActivity.class);
                             startActivity(launchContactListActivity);
-                            Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Logging In", Toast.LENGTH_LONG).show();
                         }
                         else
                             Toast.makeText(MainActivity.this,"Logging Error",Toast.LENGTH_LONG).show();

@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by Amine on 27/05/2017.
  */
 
-public class SqlLiteConnection extends SQLiteOpenHelper {
+public final class SqlLiteConnection extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "BussniessCard.db";
     public static final String TABLE_NAME = "users";
@@ -55,12 +55,38 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean checkLogin(String username , String password)
+    public boolean checkLogin1(String username , String password)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         final Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"' and PASSWORD='"+password+"'",null);
         if (cursor != null)
             return true;
+        else
+            return false;
+    }
+
+    public boolean checkLogin (String username , String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
+                new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,
+                        SqlLiteConnection.phone, SqlLiteConnection.adress,
+                        SqlLiteConnection.email},
+                SqlLiteConnection.username + " = ? AND "+SqlLiteConnection.password+ " = ?",
+                new String[] { username , password},
+                null, null, null, null);
+
+        if (c != null) {
+            /*c.moveToFirst();
+            Card u = new Card(mail, c.getString(0), c.getString(1), c.getString(2));
+            u.setAddress(c.getString(3));
+            u.setTel1(c.getString(4));
+            u.setTel2(c.getString(5));
+            u.setWebsite(c.getString(6));
+            u.setPhoto(c.getString(7));
+            c.close(); // close the cursor
+            return u;*/
+            return true;
+        }
         else
             return false;
     }
