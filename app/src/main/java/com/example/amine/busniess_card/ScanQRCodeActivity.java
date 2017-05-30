@@ -1,11 +1,14 @@
 package com.example.amine.busniess_card;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.google.zxing.Result;
+
+import java.io.Serializable;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -59,6 +62,17 @@ public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScanne
     @Override
     public void handleResult(Result result) {
 
+        BusniessCard card_result = getCardObject(result.getText().toString());
+        Intent intent = new Intent(ScanQRCodeActivity.this, BusniessCardActivity.class);
+        intent.putExtra("card", (Serializable) card_result);
+        startActivity(intent);
+    }
+
+
+    private BusniessCard getCardObject(String s) {
+        BusniessCard bc = new BusniessCard();
+        //Nour je veux savoir comment je retroune la busniessCard (plutôt remplir la BusniessCard bc)
+        // qui contient les données approprié à partir du String s (passé en paramètre)
+        return bc;
     }
 }
-
