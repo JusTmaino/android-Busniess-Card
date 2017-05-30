@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                         boolean exist = cn.checkLogin(username.getText().toString() , password.getText().toString());
                         if(exist == true)
                         {
-                            Intent launchContactListActivity = new Intent(MainActivity.this, ContactListActivity.class);
-                            startActivity(launchContactListActivity);
+                            Intent launchMenuActivity = new Intent(MainActivity.this, MenuActivity.class);
+                            startActivity(launchMenuActivity);
                             Toast.makeText(MainActivity.this, "Logging In", Toast.LENGTH_LONG).show();
                         }
                         else
