@@ -14,6 +14,7 @@ public class MenuActivity extends Activity {
 
     Button importContacts;
     Button scanQRCode;
+    Button generateQRCode;
     Button editMyCard;
 
     @Override
@@ -23,9 +24,11 @@ public class MenuActivity extends Activity {
 
         importContacts = (Button) findViewById(R.id.importContacts);
         scanQRCode = (Button) findViewById(R.id.scanQRcode);
+        generateQRCode = (Button) findViewById(R.id.generateQRCod);
         editMyCard = (Button) findViewById(R.id.editMycard);
         importContact();
         scan();
+        generate();
         edit();
 
     }
@@ -44,8 +47,22 @@ public class MenuActivity extends Activity {
         scanQRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean generate = false;
                 Intent launchScanQRCodeActivity = new Intent(MenuActivity.this,ScanQRCodeActivity.class);
+                launchScanQRCodeActivity.putExtra("generate", generate);
                 startActivity(launchScanQRCodeActivity);
+            }
+        });
+    }
+
+    public void generate(){
+        generateQRCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean generate = true;
+                Intent launchGenerateQRCodeActivity = new Intent(MenuActivity.this,ScanQRCodeActivity.class);
+                launchGenerateQRCodeActivity.putExtra("generate", generate);
+                startActivity(launchGenerateQRCodeActivity);
             }
         });
     }

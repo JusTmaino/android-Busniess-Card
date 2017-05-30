@@ -1,93 +1,64 @@
 package com.example.amine.busniess_card;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.widget.Toast;
+import android.graphics.Bitmap;
+import android.widget.ImageView;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.zxing.Result;
 
-import java.io.IOException;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
  * Created by Amine on 29/05/2017.
  */
 
-public class ScanQRCodeActivity extends Activity {
-    SurfaceView cameraView;
-    BarcodeDetector barcode;
-    CameraSource cameraSource;
-    SurfaceHolder holder;
+public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+
+    private ZXingScannerView mScannerView;
+
+    private ImageView qr_code;
+    private BusniessCard card;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.scan_qr_code);
-        cameraView = (SurfaceView) findViewById(R.id.cameraView);
-        cameraView.setZOrderMediaOverlay(true);
-        holder = cameraView.getHolder();
-        barcode = new BarcodeDetector.Builder(this)
-                .setBarcodeFormats(Barcode.QR_CODE)
-                .build();
-        if(!barcode.isOperational()){
-            Toast.makeText(getApplicationContext(), "Sorry, Couldn't setup the detector", Toast.LENGTH_LONG).show();
-            this.finish();
+    public void onCreate(Bundle state) {
+        super.onCreate(state);
+
+        mScannerView = new ZXingScannerView(this);
+
+        if (!getIntent().getExtras().getBoolean("generate")) {
+            setContentView(mScannerView);
+
+        } else if (getIntent().getSerializableExtra("Card") != null) {
+            setContentView(R.layout.scan_qr_code);
+            try {
+                card = (BusniessCard) getIntent().getSerializableExtra("Card");
+                Bitmap bitMatrix = QRCodeHandler.generateMatrix(card.toString(getApplicationContext()));
+                qr_code = (ImageView) findViewById(R.id.qrCodeImg);
+                qr_code.setImageBitmap(bitMatrix);
+                card = (BusniessCard) getIntent().getSerializableExtra("Card");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-        cameraSource = new CameraSource.Builder(this, barcode)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedFps(24)
-                .setAutoFocusEnabled(true)
-                .setRequestedPreviewSize(1920,1024)
-                .build();
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                try{
-                    if(ContextCompat.checkSelfPermission(ScanQRCodeActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-                        cameraSource.start(cameraView.getHolder());
-                    }
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
+    }
 
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mScannerView.setResultHandler(this);
+        mScannerView.startCamera();
+    }
 
-            }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mScannerView.stopCamera();
+    }
 
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
+    @Override
+    public void handleResult(Result result) {
 
-            }
-        });
-        barcode.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
-
-            }
-
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes =  detections.getDetectedItems();
-                if(barcodes.size() > 0){
-                    Intent intent = new Intent();
-                    intent.putExtra("qrcode", barcodes.valueAt(0).displayValue);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-            }
-        });
     }
 }
+
