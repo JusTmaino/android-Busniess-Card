@@ -45,6 +45,21 @@
             android:label="@string/app_name" >
         </activity>
 
+        <activity
+            android:name=".ScanQRCodeActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".EditMyContactActivity"
+            android:label="@string/app_name" >
+        </activity>
+
     </application>
 
 </manifest>
