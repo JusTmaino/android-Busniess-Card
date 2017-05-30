@@ -21,6 +21,15 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public static final String adress = "ADRESS";
     public static final String email = "EMAIL";
 
+    public static final String TABLE_CONTACTS = "contacts";
+    public static final String idContact = "ID";
+    public static final String nameContact = "NAME";
+    public static final String jobContact = "JOB";
+    public static final String mobilePhone = "MOBILEPHONE";
+    public static final String adressContact = "ADRESS";
+    public static final String emailContact = "EMAIL";
+
+
     public SqlLiteConnection(Context context) {
         super(context, DATABASE_NAME, null, 1);
         //SQLiteDatabase db = this.getWritableDatabase();
@@ -29,11 +38,14 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_CONTACTS+" ("+idContact+" TEXT PRIMARY KEY,"+nameContact+" TEXT,"+jobContact+" TEXT,"+mobilePhone+" INTEGER,"+adressContact+" TEXT,"+emailContact+" TEXT)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS"+TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS"+TABLE_CONTACTS);
         onCreate(db);
     }
 
@@ -55,7 +67,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean checkLogin1(String username , String password)
+    public boolean checkLoginUser(String username , String password)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"' AND PASSWORD='"+password+"'",null);
@@ -89,5 +101,24 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         }
         else
             return false;
+    }
+
+    public boolean insertContact(String idContact1 , String nameContact1 , String jobContact1 , String mobilePhone1 , String adressContact1 , String emailContact1)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentVal = new ContentValues();
+        contentVal.put(idContact , idContact1);
+        contentVal.put(nameContact , nameContact1);
+        contentVal.put(jobContact , jobContact1);
+        contentVal.put(mobilePhone , mobilePhone1);
+        contentVal.put(adressContact , adressContact1);
+        contentVal.put(emailContact , emailContact1);
+        long result = db.insert(TABLE_CONTACTS , null , contentVal);
+
+        if(result== -1) {
+            return false;
+        }
+        else
+            return true;
     }
 }
