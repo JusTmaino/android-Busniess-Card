@@ -1,6 +1,7 @@
 package com.example.amine.busniess_card;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +11,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.database.MatrixCursor;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.io.File;
@@ -43,7 +47,7 @@ public class ContactListActivity extends Activity {
                 R.id.tv_details }, 0);
 
         // Getting reference to listview
-        ListView lstContacts = (ListView) findViewById(R.id.listContacts);
+        final ListView lstContacts = (ListView) findViewById(R.id.listContacts);
 
         // Setting the adapter to listview
         lstContacts.setAdapter(mAdapter);
@@ -55,6 +59,22 @@ public class ContactListActivity extends Activity {
         // Starting the AsyncTask process to retrieve and load listview with
         // contacts
         listViewContactsLoader.execute();
+        lstContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                                    int position, long arg3) {
+
+
+                    /*
+                    Intent intent = new Intent(getActivity(),EditMyContactActivity.class);
+                    intent.putExtra(DatabaseContract.BusinessCardDataTable.KEY_BCID,businessCardIDS.get(position));
+                    getActivity().startActivity(intent);
+                    //Toast.makeText(getActivity(), name[position]+" clicked", Toast.LENGTH_SHORT).show();
+*/
+
+            }
+        });
 
     }
 
@@ -89,14 +109,12 @@ public class ContactListActivity extends Activity {
 
                     String displayName = "";
                     String nickName = "";
-                    String homePhone = "";
                     String mobilePhone = "";
-                    String workPhone = "";
                     String photoPath = ""; //+ R.drawable.blank;
                     byte[] photoByte = null;
                     String homeEmail = "";
+                    String email = "";
                     String workEmail = "";
-                    String companyName = "";
                     String title = "";
 
                     if (dataCursor.moveToFirst()) {
@@ -123,18 +141,11 @@ public class ContactListActivity extends Activity {
                                     .equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
                                 switch (dataCursor.getInt(dataCursor
                                         .getColumnIndex("data2"))) {
-                                    case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-                                        homePhone = dataCursor.getString(dataCursor
-                                                .getColumnIndex("data1"));
-                                        break;
+
                                     case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                                         mobilePhone = dataCursor
                                                 .getString(dataCursor
                                                         .getColumnIndex("data1"));
-                                        break;
-                                    case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-                                        workPhone = dataCursor.getString(dataCursor
-                                                .getColumnIndex("data1"));
                                         break;
                                 }
                             }
@@ -164,8 +175,7 @@ public class ContactListActivity extends Activity {
                                             dataCursor
                                                     .getColumnIndex("mimetype"))
                                     .equals(ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)) {
-                                companyName = dataCursor.getString(dataCursor
-                                        .getColumnIndex("data1"));
+
                                 title = dataCursor.getString(dataCursor
                                         .getColumnIndex("data4"));
                             }
@@ -222,31 +232,22 @@ public class ContactListActivity extends Activity {
 
                         } while (dataCursor.moveToNext());
 
-                        String details = "";
+
 
                         // Concatenating various information to single string
-                        if (homePhone != null && !homePhone.equals(""))
-                            details = "HomePhone : " + homePhone + "\n";
-                        if (mobilePhone != null && !mobilePhone.equals(""))
-                            details += "MobilePhone : " + mobilePhone + "\n";
-                        if (workPhone != null && !workPhone.equals(""))
-                            details += "WorkPhone : " + workPhone + "\n";
                         if (nickName != null && !nickName.equals(""))
-                            details += "NickName : " + nickName + "\n";
-                        if (homeEmail != null && !homeEmail.equals(""))
-                            details += "HomeEmail : " + homeEmail + "\n";
-                        if (workEmail != null && !workEmail.equals(""))
-                            details += "WorkEmail : " + workEmail + "\n";
-                        if (companyName != null && !companyName.equals(""))
-                            details += "CompanyName : " + companyName + "\n";
-                        if (title != null && !title.equals(""))
-                            details += "Title : " + title + "\n";
+                            displayName += "  " + nickName ;
+                        if (workEmail != null && !workEmail.equals("")) {
+                            email += "" + workEmail;
+                        }else if (homeEmail != null && !homeEmail.equals("")) {
+                            email += ""+ homeEmail ;
+                        }
 
                         // Adding id, display name, path to photo and other
                         // details to cursor
                         mMatrixCursor.addRow(new Object[] {
                                 Long.toString(contactId), displayName,
-                                photoPath, details });
+                                photoPath,email });
                     }
 
                 } while (contactsCursor.moveToNext());

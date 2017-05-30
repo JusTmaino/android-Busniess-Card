@@ -37,7 +37,7 @@ public class MenuActivity extends Activity {
         importContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent launchContactListActivity = new Intent(MenuActivity.this,ContactListActivity.class);
+                Intent launchContactListActivity = new Intent(MenuActivity.this,ContactImportActivity.class);
                 startActivity(launchContactListActivity);
             }
         });
