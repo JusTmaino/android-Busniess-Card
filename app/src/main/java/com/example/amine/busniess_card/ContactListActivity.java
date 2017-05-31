@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by Amine on 28/05/2017.
@@ -36,6 +38,7 @@ public class ContactListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_list);
+        bcDetails = new ArrayList<String>();
         this.getContactsData();
         /*mAdapter = new SimpleCursorAdapter(getBaseContext(),
                 R.layout.lv_layout, null, new String[] { "name", "photo",
@@ -68,11 +71,16 @@ public class ContactListActivity extends Activity {
     public void getContactsData(){
         SqlLiteConnection sq = new SqlLiteConnection(this.getApplicationContext());
         bcs = sq.getContacts();
-        if(bcs.size()> 0){
-            for(BusniessCard bc:bcs){
-                bcDetails.add(bc.getDetails());
+        Log.i(TAG, "getContactsData: avant bcs size");
+
+            for(int i =0; i < bcs.size();i++){
+                BusniessCard bc = bcs.get(i);
+                String s = "";
+                s += bc.getDetails();
+                Log.i(s, "getContactsData: ");
+                bcDetails.add(s);
             }
-        }
+
     }
 
     @Override
