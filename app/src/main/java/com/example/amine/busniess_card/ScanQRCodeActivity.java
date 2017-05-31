@@ -69,10 +69,21 @@ public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScanne
         String [] array = result.getText().toString().split(";");
         String msg = "";
         msg+= "Name :"+array[0]+"\n";
-        msg+= "Job :"+array[1]+"\n";
-        msg+= "Phone :"+array[2]+"\n";
+        if(!array[1].isEmpty()) {
+            msg+= "Job :"+array[1]+"\n";
+        }
+        if(!array[2].isEmpty()) {
+            msg+= "Phone :"+array[2]+"\n";
+        }
+        if(!array[3].isEmpty()) {
+            msg+= "Adress :"+array[3]+"\n";
+        }
+        if(!array[4].isEmpty()) {
+            msg+= "Email :"+array[4]+"\n";
+        }
+        /*msg+= "Phone :"+array[2]+"\n";
         msg+= "Adress :"+array[3]+"\n";
-        msg+= "Email :"+array[4];
+        msg+= "Email :"+array[4];*/
 
 
         AlertDialog alertDialog = new AlertDialog.Builder(ScanQRCodeActivity.this).create();
