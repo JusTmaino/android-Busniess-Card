@@ -34,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
         importContact();
         scan();
         generate(getApplicationContext());
-        edit();
+        edit(getApplicationContext());
         showCards();
 
 
@@ -77,12 +77,15 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    public void edit(){
+    public void edit(final Context c){
         editMyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent launchEditMyContactActivity = new Intent(MenuActivity.this,BusniessCardActivity.class);
                 String username = getIntent().getExtras().getString("USERNAME");
+                SqlLiteConnection sq = new SqlLiteConnection(c);
+                String id = sq.getUserId(username);
+                launchEditMyContactActivity.putExtra("userID", id);
                 launchEditMyContactActivity.putExtra("username", username);
                 startActivity(launchEditMyContactActivity);
             }

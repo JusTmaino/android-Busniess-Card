@@ -39,34 +39,38 @@ public class BusniessCardActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.emailEditText);
         EditBTN = (Button) findViewById(R.id.editBtn);
 
+        String userID = getIntent().getExtras().getString("userID");
+        //Toast.makeText(BusniessCardActivity.this,userID , Toast.LENGTH_LONG).show();
         String user_name = getIntent().getExtras().getString("username");
-        //bc = cn.getCard(user_name);
+        cn = new SqlLiteConnection(this);
+        bc = cn.getCard(user_name);
         //Toast.makeText(BusniessCardActivity.this, cn.getCard(user_name).getDetails(), Toast.LENGTH_LONG).show();
 
-        /*username.setText(bc.getmName(), TextView.BufferType.EDITABLE);
+        username.setText(bc.getmName(), TextView.BufferType.EDITABLE);
         job.setText(bc.getmJobTitle(), TextView.BufferType.EDITABLE);
         phone.setText(bc.getmPhoneNumber(), TextView.BufferType.EDITABLE);
         adress.setText(bc.getmAddress(), TextView.BufferType.EDITABLE);
-        email.setText(bc.getmEmail(), TextView.BufferType.EDITABLE);*/
+        email.setText(bc.getmEmail(), TextView.BufferType.EDITABLE);
 
-        updateData();
+        updateData(userID);
 
     }
 
-    public void updateData(){
+    public void updateData(final String ID){
         EditBTN.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if( password.getText().toString().equals(confirmPassord.getText().toString()) )
                         {
-                            boolean isUpdated = cn.updateData(username.getText().toString(), password.getText().toString(),job.getText().toString(), phone.getText().toString(), adress.getText().toString(), email.getText().toString());
+                            boolean isUpdated = cn.updateData(ID,username.getText().toString(), password.getText().toString(),job.getText().toString(), phone.getText().toString(), adress.getText().toString(), email.getText().toString());
                             if (isUpdated == true)
                             {
-                                Intent launchContactListActivity = new Intent(BusniessCardActivity.this, MenuActivity.class);
+                                /*Intent launchContactListActivity = new Intent(BusniessCardActivity.this, MenuActivity.class);
                                 launchContactListActivity.putExtra("USERNAME", username.getText().toString());
-                                startActivity(launchContactListActivity);
+                                startActivity(launchContactListActivity);*/
                                 Toast.makeText(BusniessCardActivity.this, "Updated", Toast.LENGTH_LONG).show();
+                                finish();
                             }
                             else
                                 Toast.makeText(BusniessCardActivity.this, "Not Updated", Toast.LENGTH_LONG).show();

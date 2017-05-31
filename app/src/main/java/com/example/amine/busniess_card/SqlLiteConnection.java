@@ -170,7 +170,10 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public ArrayList<BusniessCard> getContacts(){
         Log.i(TAG, "getContacts: ");
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACTS, allColumns, null, null, null, null, null);
+        Cursor cursor = db.query(SqlLiteConnection.TABLE_CONTACTS,
+                new String[]{   SqlLiteConnection.nameContact, SqlLiteConnection.jobContact,SqlLiteConnection.mobilePhone,
+                        SqlLiteConnection.adressContact, SqlLiteConnection.emailContact},
+                        null, null, null, null, null);
         // Cursor cursor = db.rawQuery("select All from "+TABLE_CONTACTS, null);
 
         ArrayList<BusniessCard> bcs = new ArrayList<BusniessCard>();
@@ -196,7 +199,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateData(String username1 , String password1 ,String job1, String phone1 , String adress1 , String email1)
+    public boolean updateData(String id1,String username1 , String password1 ,String job1, String phone1 , String adress1 , String email1)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentVal = new ContentValues();
@@ -207,8 +210,28 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         contentVal.put(adress , adress1);
         contentVal.put(email , email1);
         contentVal.put(picture , "not Provided");
-        db.update(TABLE_NAME ,contentVal,SqlLiteConnection.username+" = ?",new String[] { username1 });
+        db.update(TABLE_NAME ,contentVal,SqlLiteConnection.id+" = ?",new String[] { id1 });
 
         return true;
     }
+
+    public String getUserId(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        BusniessCard bc = new BusniessCard();
+        String id="";
+        Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
+                new String[]{   SqlLiteConnection.id},
+                SqlLiteConnection.username + " = ?",
+                new String[] { username },
+                null, null, null, null);
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            id = c.getString(0);
+
+        }
+        return id;
+    }
+
+
 }
