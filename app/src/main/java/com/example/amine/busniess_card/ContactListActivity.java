@@ -87,6 +87,7 @@ public class ContactListActivity extends Activity {
 
             // Querying the table ContactsContract.Contacts to retrieve all the
             // contacts
+
             Cursor contactsCursor = getContentResolver().query(contactsUri,
                     null, null, null,
                     ContactsContract.Contacts.DISPLAY_NAME + " ASC ");
