@@ -82,13 +82,37 @@ public class BusniessCard {
 
     public String getDetails()
     {
-        String detail=mName+";;;"+mJobTitle+";;;"+mPhoneNumber+";;;"+mAddress+";;;"+mEmail;
+        String detail=mName+";"+mJobTitle+";"+mPhoneNumber+";"+mAddress+";"+mEmail;
         return detail;
     }
 
-    public String toString(Context applicationContext) {
+    public static String[] splitStringToCard(String s) {
+        String [] array = s.split(";");
 
-        String chaine="business card";
-        return chaine;
+        /*String [] array_Busniesscard = new String[5];
+        array_Busniesscard[0] = array[1];
+        array_Busniesscard[1] = array[2];
+        array_Busniesscard[2] = array[3];
+        String [] array_address = array[4].split(":");
+        array_Busniesscard[3] = array_address[1];
+        String [] array_tel1 = array[5].split(":");
+        array_Busniesscard[4] = array_tel1[1];
+        String [] array_tel2 = array[6].split(":");
+        array_Busniesscard[5] = array_tel2[1];
+        String [] array_site = array[7].split(":");
+        array_Busniesscard[6] = array_site[1];*/
+
+        return array;
+    }
+
+    public static BusniessCard getCardObject(String s) {
+        BusniessCard bc = new BusniessCard();
+        String [] data = splitStringToCard(s);
+        bc.setmName(data[0]);
+        bc.setmJobTitle(data[1]);
+        bc.setmPhoneNumber(data[2]);
+        bc.setmAddress(data[3]);
+        bc.setmEmail(data[4]);
+        return bc;
     }
 }
