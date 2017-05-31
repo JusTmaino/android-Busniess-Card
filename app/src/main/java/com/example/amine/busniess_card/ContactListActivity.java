@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.database.MatrixCursor;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
@@ -40,10 +42,6 @@ public class ContactListActivity extends Activity {
         setContentView(R.layout.contact_list);
         bcDetails = new ArrayList<String>();
         this.getContactsData();
-        /*mAdapter = new SimpleCursorAdapter(getBaseContext(),
-                R.layout.lv_layout, null, new String[] { "name", "photo",
-                "details" }, new int[] { R.id.tv_name, R.id.tv_photo,
-                R.id.tv_details }, 0);*/
 
         // Getting reference to listview
         ListView lstContacts = (ListView) findViewById(R.id.listContacts);
@@ -55,13 +53,13 @@ public class ContactListActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
 
-
-                    /*
-                    Intent intent = new Intent(getActivity(),ShowMyContactActivity.class);
-                    intent.putExtra(DatabaseContract.BusinessCardDataTable.KEY_BCID,businessCardIDS.get(position));
-                    getActivity().startActivity(intent);
-                    //Toast.makeText(getActivity(), name[position]+" clicked", Toast.LENGTH_SHORT).show();
-*/
+                    Intent intent = new Intent(ContactListActivity.this,ShowMyContactActivity.class);
+                    intent.putExtra("name", bcs.get(position).getmName());
+                intent.putExtra("job", bcs.get(position).getmJobTitle());
+                intent.putExtra("adresse", bcs.get(position).getmAddress());
+                intent.putExtra("email", bcs.get(position).getmEmail());
+                intent.putExtra("phone", bcs.get(position).getmPhoneNumber());
+                    startActivity(intent);
 
             }
         });
@@ -77,7 +75,6 @@ public class ContactListActivity extends Activity {
                 BusniessCard bc = bcs.get(i);
                 String s = "";
                 s += bc.getmName() + "   "+ bc.getmPhoneNumber();
-                Log.i(s, "getContactsData: ");
                 bcDetails.add(s);
             }
 

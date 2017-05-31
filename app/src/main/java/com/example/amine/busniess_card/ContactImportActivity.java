@@ -156,18 +156,88 @@ public class ContactImportActivity extends AppCompatActivity {
 
     private void contactPicked(Intent data) {
         String id = "";
+        String adresse = "";
+        String displayName = "";
+        String mobilePhone = "";
+        String email = "";
+        String title = "";
         String photoPath = ""; //+ R.drawable.blank;
         byte[] photoByte = null;
         BusniessCard contact = new BusniessCard();
         Uri uri = data.getData();
-        String[] projection = {ContactsContract.Contacts._ID};
-        Cursor cursor = this.getContentResolver().query(uri, projection, null, null, null);
+        Cursor cursor = this.getContentResolver().query(uri,null, null, null, null);
         if (cursor.moveToFirst()) {
             id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
             Log.i("import", id);
-            contact = getContactInfo(getApplicationContext(), id);
-            Log.i("import", "after database call");
+            displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            Log.i("avant get contact info ",displayName);
+            //contact = getContactInfo(getApplicationContext(), id);
+            {
+                // to get data you need to query commonkinds
+                Cursor emailCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ? ", new String[]{id}, null);
 
+                if(emailCursor.moveToFirst())
+                {
+                    //emailCursor.moveToNext();
+                    email = emailCursor.getString(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                    Log.i(TAG,email);
+                }
+                else
+                    email = "not found";
+                Cursor phoneCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null
+                        , ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ", new String[]{id}, null);
+
+                if(phoneCursor.moveToFirst())
+                {
+                    //phoneCursor.moveToNext();
+                    mobilePhone = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    phoneCursor.moveToNext();
+                    //String organization = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
+                    // String website = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
+                    Log.i(TAG,mobilePhone);
+                    phoneCursor.close();
+                }
+                else
+                    mobilePhone = "not found";
+
+                String orgWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+                String[] orgWhereParams = new String[]{id,
+                        ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
+                Cursor orgCursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                        null, orgWhere, orgWhereParams, null);
+
+
+                if(orgCursor.moveToNext())
+                {
+
+                    title = orgCursor.getString(orgCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
+                    Log.i(TAG,title);
+                    orgCursor.close();
+                }
+                else
+                {
+                    title = "not found";
+
+                }
+
+
+                Cursor addressCursor = getContentResolver().query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " =?", new String[]{id}, null);
+                if(addressCursor.moveToNext())
+                {
+                    adresse=addressCursor.getString(addressCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS));
+                    Log.i(TAG,adresse);
+                    addressCursor.close();
+                }
+                else
+                {
+                    Log.i(TAG,"no address");
+                    adresse = "not provided";
+                }
+
+            }
+            Log.i("import", "after database call");
         }
         /*if (cursor.moveToFirst()) {
             if (cursor
@@ -220,7 +290,8 @@ public class ContactImportActivity extends AppCompatActivity {
 
             }
         }*/
+
         SqlLiteConnection sq = new SqlLiteConnection(getApplicationContext());
-        sq.insertContact(id,contact.getmName(),contact.getmJobTitle(),contact.getmPhoneNumber(),contact.getmAddress(),contact.getmEmail());
+        sq.insertContact(id,displayName,title,mobilePhone,adresse,email);
     }
 }
