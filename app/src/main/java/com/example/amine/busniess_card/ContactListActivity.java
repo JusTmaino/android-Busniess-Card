@@ -57,7 +57,7 @@ public class ContactListActivity extends Activity {
 
 
                     /*
-                    Intent intent = new Intent(getActivity(),EditMyContactActivity.class);
+                    Intent intent = new Intent(getActivity(),ShowMyContactActivity.class);
                     intent.putExtra(DatabaseContract.BusinessCardDataTable.KEY_BCID,businessCardIDS.get(position));
                     getActivity().startActivity(intent);
                     //Toast.makeText(getActivity(), name[position]+" clicked", Toast.LENGTH_SHORT).show();
@@ -76,7 +76,7 @@ public class ContactListActivity extends Activity {
             for(int i =0; i < bcs.size();i++){
                 BusniessCard bc = bcs.get(i);
                 String s = "";
-                s += bc.getDetails();
+                s += bc.getmName() + "   "+ bc.getmPhoneNumber();
                 Log.i(s, "getContactsData: ");
                 bcDetails.add(s);
             }

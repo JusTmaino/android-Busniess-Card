@@ -7,7 +7,7 @@ import android.os.Bundle;
  * Created by Amine on 30/05/2017.
  */
 
-public class EditMyContactActivity extends Activity {
+public class ShowMyContactActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
