@@ -61,24 +61,22 @@ public class BusniessCardActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if( password.getText().toString().equals(confirmPassord.getText().toString()) )
-                        {
-                            boolean isUpdated = cn.updateData(ID,username.getText().toString(), password.getText().toString(),job.getText().toString(), phone.getText().toString(), adress.getText().toString(), email.getText().toString());
-                            if (isUpdated == true)
-                            {
-                                /*Intent launchContactListActivity = new Intent(BusniessCardActivity.this, MenuActivity.class);
-                                launchContactListActivity.putExtra("USERNAME", username.getText().toString());
-                                startActivity(launchContactListActivity);*/
-                                Toast.makeText(BusniessCardActivity.this, "Updated", Toast.LENGTH_LONG).show();
-                                finish();
+                        if((!password.getText().toString().isEmpty() && !confirmPassord.getText().toString().isEmpty())) {
+                            if (password.getText().toString().equals(confirmPassord.getText().toString())) {
+                                boolean isUpdated = cn.updateData(ID, username.getText().toString(), password.getText().toString(), job.getText().toString(), phone.getText().toString(), adress.getText().toString(), email.getText().toString());
+                                if (isUpdated == true) {
+                                    Toast.makeText(BusniessCardActivity.this, "Updated", Toast.LENGTH_LONG).show();
+                                    finish();
+                                } else
+                                    Toast.makeText(BusniessCardActivity.this, "Not Updated", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(BusniessCardActivity.this, "Passwords Do not match", Toast.LENGTH_LONG).show();
                             }
-                            else
-                                Toast.makeText(BusniessCardActivity.this, "Not Updated", Toast.LENGTH_LONG).show();
                         }
-                        else
-                        {
-                            Toast.makeText(BusniessCardActivity.this, "Passwords Do not match", Toast.LENGTH_LONG).show();
+                        else {
+                            Toast.makeText(BusniessCardActivity.this, "Password and Confirm Needed", Toast.LENGTH_LONG).show();
                         }
+
                     }
                 }
         );

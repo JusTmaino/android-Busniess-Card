@@ -66,7 +66,6 @@ public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScanne
     @Override
     public void handleResult(Result result) {
 
-        //Toast.makeText(ScanQRCodeActivity.this, result.getText().toString(), Toast.LENGTH_LONG).show();
         String [] array = result.getText().toString().split(";");
         String msg = "";
         msg+= "Name :"+array[0]+"\n";

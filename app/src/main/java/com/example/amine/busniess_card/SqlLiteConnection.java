@@ -76,21 +76,14 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean checkRegisterUser(String username)
+    public boolean checkRegisterUser(String username1)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        /*Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"'",null);
-        if (cursor.getCount() > 0)
-            return true;
-        else
-            return false;*/
 
         Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
-                new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,SqlLiteConnection.job,
-                        SqlLiteConnection.phone, SqlLiteConnection.adress,
-                        SqlLiteConnection.email,SqlLiteConnection.picture},
+                new String[]{   SqlLiteConnection.username },
                 SqlLiteConnection.username + " = ?",
-                new String[] { username },
+                new String[] { username1 },
                 null, null, null, null);
         if (c.getCount() > 0) {
             return true;
