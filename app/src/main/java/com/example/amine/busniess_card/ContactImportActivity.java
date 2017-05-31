@@ -169,7 +169,7 @@ public class ContactImportActivity extends AppCompatActivity {
             Log.i("import", "after database call");
 
         }
-        if (cursor.moveToFirst()) {
+        /*if (cursor.moveToFirst()) {
             if (cursor
                     .getString(
                             cursor
@@ -219,6 +219,8 @@ public class ContactImportActivity extends AppCompatActivity {
                 contact.setmPicture(photoPath);
 
             }
-        }
+        }*/
+        SqlLiteConnection sq = new SqlLiteConnection(getApplicationContext());
+        sq.insertContact(id,contact.getmName(),contact.getmJobTitle(),contact.getmPhoneNumber(),contact.getmAddress(),contact.getmEmail());
     }
 }
