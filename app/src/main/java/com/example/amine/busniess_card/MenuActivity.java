@@ -19,6 +19,7 @@ public class MenuActivity extends AppCompatActivity {
     Button scanQRCode;
     Button generateQRCode;
     Button editMyCard;
+    Button showAllCards ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,13 @@ public class MenuActivity extends AppCompatActivity {
         scanQRCode = (Button) findViewById(R.id.scanQRcode);
         generateQRCode = (Button) findViewById(R.id.generateQRCod);
         editMyCard = (Button) findViewById(R.id.editMycard);
+        showAllCards = (Button) findViewById(R.id.showCards);
         importContact();
         scan();
         generate(getApplicationContext());
         edit();
+        showCards();
+
 
     }
 
@@ -84,4 +88,15 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void showCards(){
+        showAllCards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchContactListActivity = new Intent(MenuActivity.this,ContactListActivity.class);
+                startActivity(launchContactListActivity);
+            }
+        });
+    }
+
 }

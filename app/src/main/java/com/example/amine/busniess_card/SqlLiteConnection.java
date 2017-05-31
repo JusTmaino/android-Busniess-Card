@@ -5,6 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Amine on 27/05/2017.
@@ -161,6 +166,35 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         else
             return true;
     }
+
+    public ArrayList<BusniessCard> getContacts(){
+        Log.i(TAG, "getContacts: ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CONTACTS, allColumns, null, null, null, null, null);
+        // Cursor cursor = db.rawQuery("select All from "+TABLE_CONTACTS, null);
+
+        ArrayList<BusniessCard> bcs = new ArrayList<BusniessCard>();
+
+        if(cursor.moveToFirst()){
+            do{
+                BusniessCard bc = new BusniessCard();
+                bc.setmName(cursor.getString(cursor.getColumnIndex(nameContact)));
+                bc.setmEmail(cursor.getString(cursor.getColumnIndex(emailContact)));
+                bc.setmJobTitle(cursor.getString(cursor.getColumnIndex(jobContact)));
+                bc.setmAddress(cursor.getString(cursor.getColumnIndex(adressContact)));
+                bc.setmPhoneNumber(cursor.getString(cursor.getColumnIndex(mobilePhone)));
+                bcs.add(bc);
+                Log.i(bc.getDetails(), "getContacts: ");
+            }while (cursor.moveToNext());
+        }
+        else
+            Log.i("Sql Lite","no Contacts");
+        cursor.close();
+        db.close();
+        return bcs;
+
+    }
+
 
     public boolean updateData(String username1 , String password1 ,String job1, String phone1 , String adress1 , String email1)
     {
