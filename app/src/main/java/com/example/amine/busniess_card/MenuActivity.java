@@ -1,10 +1,12 @@
 package com.example.amine.busniess_card;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * Created by Amine on 30/05/2017.
@@ -28,7 +30,7 @@ public class MenuActivity extends Activity {
         editMyCard = (Button) findViewById(R.id.editMycard);
         importContact();
         scan();
-        generate();
+        generate(getApplicationContext());
         edit();
 
     }
@@ -55,13 +57,17 @@ public class MenuActivity extends Activity {
         });
     }
 
-    public void generate(){
+    public void generate(final Context c){
         generateQRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean generate = true;
                 Intent launchGenerateQRCodeActivity = new Intent(MenuActivity.this,ScanQRCodeActivity.class);
                 launchGenerateQRCodeActivity.putExtra("generate", generate);
+                SqlLiteConnection sq = new SqlLiteConnection(c);
+                String username = getIntent().getExtras().getString("USERNAME");
+                //Toast.makeText(MenuActivity.this, username, Toast.LENGTH_LONG).show();
+                launchGenerateQRCodeActivity.putExtra("cardDetails", sq.getCard(username).getDetails());
                 startActivity(launchGenerateQRCodeActivity);
             }
         });

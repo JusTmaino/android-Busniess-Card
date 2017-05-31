@@ -17,6 +17,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public static final String id = "ID";
     public static final String username = "USERNAME";
     public static final String password = "PASSWORD";
+    public static final String job = "JOB";
     public static final String phone = "PHONE";
     public static final String adress = "ADRESS";
     public static final String email = "EMAIL";
@@ -37,7 +38,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+job+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT)");
         db.execSQL("CREATE TABLE "+TABLE_CONTACTS+" ("+idContact+" TEXT PRIMARY KEY,"+nameContact+" TEXT,"+jobContact+" TEXT,"+mobilePhone+" INTEGER,"+adressContact+" TEXT,"+emailContact+" TEXT)");
 
     }
@@ -49,12 +50,13 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String username1 , String password1 , String phone1 , String adress1 , String email1)
+    public boolean insertData(String username1 , String password1 ,String job1, String phone1 , String adress1 , String email1)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentVal = new ContentValues();
         contentVal.put(username , username1);
         contentVal.put(password , password1);
+        contentVal.put(job , job1);
         contentVal.put(phone , phone1);
         contentVal.put(adress , adress1);
         contentVal.put(email , email1);
@@ -67,12 +69,25 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean checkLoginUser(String username , String password)
+    public boolean checkRegisterUser(String username)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"' AND PASSWORD='"+password+"'",null);
+        /*Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE USERNAME='"+username+"'",null);
         if (cursor.getCount() > 0)
             return true;
+        else
+            return false;*/
+
+        Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
+                new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,SqlLiteConnection.job,
+                        SqlLiteConnection.phone, SqlLiteConnection.adress,
+                        SqlLiteConnection.email},
+                SqlLiteConnection.username + " = ?",
+                new String[] { username },
+                null, null, null, null);
+        if (c.getCount() > 0) {
+            return true;
+        }
         else
             return false;
     }
@@ -80,7 +95,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public boolean checkLogin(String username , String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
-                new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,
+                new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,SqlLiteConnection.job,
                         SqlLiteConnection.phone, SqlLiteConnection.adress,
                         SqlLiteConnection.email},
                 SqlLiteConnection.username + " = ? AND "+SqlLiteConnection.password+ " = ?",
@@ -101,6 +116,28 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         }
         else
             return false;
+    }
+
+    public BusniessCard getCard(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        BusniessCard bc = new BusniessCard();
+        Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
+                new String[]{   SqlLiteConnection.username, SqlLiteConnection.phone,SqlLiteConnection.job,
+                        SqlLiteConnection.adress, SqlLiteConnection.email},
+                SqlLiteConnection.username + " = ?",
+                new String[] { username },
+                null, null, null, null);
+
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            bc.setmName(c.getString(0));
+            bc.setmPhoneNumber(c.getString(1));
+            bc.setmJobTitle(c.getString(2));
+            bc.setmAddress(c.getString(3));
+            bc.setmEmail(c.getString(4));
+            c.close(); // close the cursor
+        }
+        return bc;
     }
 
     public boolean insertContact(String idContact1 , String nameContact1 , String jobContact1 , String mobilePhone1 , String adressContact1 , String emailContact1)
