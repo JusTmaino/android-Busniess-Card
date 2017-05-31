@@ -61,7 +61,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         contentVal.put(phone , phone1);
         contentVal.put(adress , adress1);
         contentVal.put(email , email1);
-        contentVal.put(picture , "");
+        contentVal.put(picture , "not Provided");
         long result = db.insert(TABLE_NAME , null , contentVal);
 
         if(result== -1) {
