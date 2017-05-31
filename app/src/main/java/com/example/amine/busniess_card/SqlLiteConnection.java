@@ -21,6 +21,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public static final String phone = "PHONE";
     public static final String adress = "ADRESS";
     public static final String email = "EMAIL";
+    public static final String picture = "PICTURE";
 
     public static final String TABLE_CONTACTS = "contacts";
     public static final String idContact = "ID";
@@ -38,7 +39,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+job+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+job+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT,"+picture+" TEXT)");
         db.execSQL("CREATE TABLE "+TABLE_CONTACTS+" ("+idContact+" TEXT PRIMARY KEY,"+nameContact+" TEXT,"+jobContact+" TEXT,"+mobilePhone+" INTEGER,"+adressContact+" TEXT,"+emailContact+" TEXT)");
 
     }
@@ -60,6 +61,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         contentVal.put(phone , phone1);
         contentVal.put(adress , adress1);
         contentVal.put(email , email1);
+        contentVal.put(picture , "");
         long result = db.insert(TABLE_NAME , null , contentVal);
 
         if(result== -1) {
@@ -81,7 +83,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
                 new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,SqlLiteConnection.job,
                         SqlLiteConnection.phone, SqlLiteConnection.adress,
-                        SqlLiteConnection.email},
+                        SqlLiteConnection.email,SqlLiteConnection.picture},
                 SqlLiteConnection.username + " = ?",
                 new String[] { username },
                 null, null, null, null);
@@ -97,7 +99,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
                 new String[]{   SqlLiteConnection.username, SqlLiteConnection.password,SqlLiteConnection.job,
                         SqlLiteConnection.phone, SqlLiteConnection.adress,
-                        SqlLiteConnection.email},
+                        SqlLiteConnection.email,SqlLiteConnection.picture},
                 SqlLiteConnection.username + " = ? AND "+SqlLiteConnection.password+ " = ?",
                 new String[] { username , password},
                 null, null, null, null);
@@ -123,7 +125,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         BusniessCard bc = new BusniessCard();
         Cursor c = db.query(    SqlLiteConnection.TABLE_NAME,
                 new String[]{   SqlLiteConnection.username, SqlLiteConnection.phone,SqlLiteConnection.job,
-                        SqlLiteConnection.adress, SqlLiteConnection.email},
+                        SqlLiteConnection.adress, SqlLiteConnection.email,SqlLiteConnection.picture},
                 SqlLiteConnection.username + " = ?",
                 new String[] { username },
                 null, null, null, null);
@@ -135,6 +137,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
             bc.setmJobTitle(c.getString(2));
             bc.setmAddress(c.getString(3));
             bc.setmEmail(c.getString(4));
+            bc.setmPicture(c.getString(5));
             c.close(); // close the cursor
         }
         return bc;
