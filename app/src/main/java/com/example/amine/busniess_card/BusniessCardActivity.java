@@ -3,29 +3,33 @@ package com.example.amine.busniess_card;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * Created by Amine on 30/05/2017.
  */
 
-public class BusniessCardActivity extends Activity {
+public class BusniessCardActivity extends AppCompatActivity {
 
     SqlLiteConnection cn;
     private ImageView userPicture;
     EditText username , password, confirmPassord ,job, phone, adress , email;
     Button EditBTN;
+    BusniessCard bc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.busniess_card_user);
-        userPicture = (ImageView) findViewById(R.id.imageUser);
+        //userPicture = (ImageView) findViewById(R.id.imageUser);
         //userPicture.setImageBitmap(image);
+
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         confirmPassord = (EditText) findViewById(R.id.confirmPassEditText);
@@ -34,6 +38,17 @@ public class BusniessCardActivity extends Activity {
         adress = (EditText) findViewById(R.id.adressEditText);
         email = (EditText) findViewById(R.id.emailEditText);
         EditBTN = (Button) findViewById(R.id.editBtn);
+
+        String user_name = getIntent().getExtras().getString("username");
+        //bc = cn.getCard(user_name);
+        //Toast.makeText(BusniessCardActivity.this, cn.getCard(user_name).getDetails(), Toast.LENGTH_LONG).show();
+
+        /*username.setText(bc.getmName(), TextView.BufferType.EDITABLE);
+        job.setText(bc.getmJobTitle(), TextView.BufferType.EDITABLE);
+        phone.setText(bc.getmPhoneNumber(), TextView.BufferType.EDITABLE);
+        adress.setText(bc.getmAddress(), TextView.BufferType.EDITABLE);
+        email.setText(bc.getmEmail(), TextView.BufferType.EDITABLE);*/
+
         updateData();
 
     }

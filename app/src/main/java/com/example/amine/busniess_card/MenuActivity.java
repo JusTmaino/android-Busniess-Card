@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,7 +13,7 @@ import android.widget.Toast;
  * Created by Amine on 30/05/2017.
  */
 
-public class MenuActivity extends Activity {
+public class MenuActivity extends AppCompatActivity {
 
     Button importContacts;
     Button scanQRCode;
@@ -66,7 +67,6 @@ public class MenuActivity extends Activity {
                 launchGenerateQRCodeActivity.putExtra("generate", generate);
                 SqlLiteConnection sq = new SqlLiteConnection(c);
                 String username = getIntent().getExtras().getString("USERNAME");
-                //Toast.makeText(MenuActivity.this, username, Toast.LENGTH_LONG).show();
                 launchGenerateQRCodeActivity.putExtra("cardDetails", sq.getCard(username).getDetails());
                 startActivity(launchGenerateQRCodeActivity);
             }
@@ -78,6 +78,8 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent launchEditMyContactActivity = new Intent(MenuActivity.this,BusniessCardActivity.class);
+                String username = getIntent().getExtras().getString("USERNAME");
+                launchEditMyContactActivity.putExtra("username", username);
                 startActivity(launchEditMyContactActivity);
             }
         });
