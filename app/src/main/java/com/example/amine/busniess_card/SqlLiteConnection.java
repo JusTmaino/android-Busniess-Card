@@ -161,4 +161,20 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         else
             return true;
     }
+
+    public boolean updateData(String username1 , String password1 ,String job1, String phone1 , String adress1 , String email1)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentVal = new ContentValues();
+        contentVal.put(username , username1);
+        contentVal.put(password , password1);
+        contentVal.put(job , job1);
+        contentVal.put(phone , phone1);
+        contentVal.put(adress , adress1);
+        contentVal.put(email , email1);
+        contentVal.put(picture , "not Provided");
+        db.update(TABLE_NAME ,contentVal,"USERNAME = ?",new String[] {username1});
+
+        return true;
+    }
 }

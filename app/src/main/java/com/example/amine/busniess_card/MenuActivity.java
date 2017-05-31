@@ -77,7 +77,7 @@ public class MenuActivity extends Activity {
         editMyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent launchEditMyContactActivity = new Intent(MenuActivity.this,EditMyContactActivity.class);
+                Intent launchEditMyContactActivity = new Intent(MenuActivity.this,BusniessCardActivity.class);
                 startActivity(launchEditMyContactActivity);
             }
         });
