@@ -69,10 +69,12 @@ public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScanne
         //Toast.makeText(ScanQRCodeActivity.this, result.getText().toString(), Toast.LENGTH_LONG).show();
         String [] array = result.getText().toString().split(";");
         String msg = "";
-        for (int i=0;i<array.length;i++)
-        {
-            msg+= array[i]+"\n";
-        }
+        msg+= "Name :"+array[0]+"\n";
+        msg+= "Job :"+array[1]+"\n";
+        msg+= "Phone :"+array[2]+"\n";
+        msg+= "Adress :"+array[3]+"\n";
+        msg+= "Email :"+array[4];
+
 
         AlertDialog alertDialog = new AlertDialog.Builder(ScanQRCodeActivity.this).create();
         alertDialog.setTitle("QRCode Info");
@@ -92,11 +94,5 @@ public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScanne
         //intent.putExtra("BusniessCard", (Serializable) card_result);
         //startActivity(intent);
     }
-
-    /*public String getBusniessCardDetails(String username)
-    {
-        SqlLiteConnection sq = new SqlLiteConnection(this);
-        return sq.getCard(username).getDetails();
-    }*/
 
 }
