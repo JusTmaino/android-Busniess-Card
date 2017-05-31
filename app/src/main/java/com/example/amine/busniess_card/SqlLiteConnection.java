@@ -173,7 +173,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         contentVal.put(adress , adress1);
         contentVal.put(email , email1);
         contentVal.put(picture , "not Provided");
-        db.update(TABLE_NAME ,contentVal,"USERNAME = ?",new String[] {username1});
+        db.update(TABLE_NAME ,contentVal,SqlLiteConnection.username+" = ?",new String[] { username1 });
 
         return true;
     }
