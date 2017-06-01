@@ -19,7 +19,8 @@
             android:layout_gravity="center"
 
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/ic_launcher" />
 
     </RelativeLayout>
 
@@ -141,19 +142,18 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:contextClickable="false"
         android:orientation="horizontal"
-        android:paddingBottom="100sp">
+        android:layout_height="250dp">
 
         <ImageView
             android:id="@+id/contactQR"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
             android:layout_gravity="center"
 
-            android:adjustViewBounds="false"
+            android:adjustViewBounds="true"
             android:scaleType="center"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
