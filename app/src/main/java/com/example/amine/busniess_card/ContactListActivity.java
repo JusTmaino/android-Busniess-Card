@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.database.MatrixCursor;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -31,7 +32,7 @@ import static android.content.ContentValues.TAG;
  * Created by Amine on 28/05/2017.
  */
 
-public class ContactListActivity extends Activity {
+public class ContactListActivity extends AppCompatActivity {
 
     ArrayList<String> bcDetails ;
     ArrayList<BusniessCard> bcs ;

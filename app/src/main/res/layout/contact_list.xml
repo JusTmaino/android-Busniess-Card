@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#2F000000">
 
 <ListView
 android:id="@+id/listContacts"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/cast_intro_overlay_background_color"
     />
 
 </RelativeLayout>
