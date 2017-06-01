@@ -59,239 +59,185 @@ public class ContactImportActivity extends AppCompatActivity {
         }
     }
 
-    public BusniessCard getContactInfo(Context context, String contactID)
-    {
-        String id = "";
-        String adresse = "";
-        String displayName = "";
-        String mobilePhone = "";
-        String email = "";
-        String title = "";
-
-        Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
-                null
-                , ContactsContract.Data.CONTACT_ID+ " = ? ", new String[]{contactID}, null);
-
-        //getNameUsingContactId(selection);
-        String contactInfoForQRCode= new String();
-
-        if (cursor.moveToNext()) {
-
-             id = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID));
-             displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            Log.i(TAG,"ID IS "+id);
-            Log.i(TAG,displayName);
-            // to get data you need to query commonkinds
-            Cursor emailCursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ? ", new String[]{id}, null);
-
-            if(emailCursor.moveToNext())
-            {
-                //emailCursor.moveToNext();
-                email = emailCursor.getString(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-                Log.i(TAG,email);
-            }
-            else
-                email = "not found";
-            Cursor phoneCursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null
-                    , ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ", new String[]{id}, null);
-
-            if(phoneCursor.moveToNext())
-            {
-                //phoneCursor.moveToNext();
-                mobilePhone = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                phoneCursor.moveToNext();
-                //String organization = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
-                // String website = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
-                Log.i(TAG,mobilePhone);
-                phoneCursor.close();
-            }
-            else
-                mobilePhone = "not found";
-
-            String orgWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-            String[] orgWhereParams = new String[]{id,
-                    ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
-            Cursor orgCursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
-                    null, orgWhere, orgWhereParams, null);
-
-
-            if(orgCursor.moveToNext())
-            {
-
-                title = orgCursor.getString(orgCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
-                Log.i(TAG,title);
-                orgCursor.close();
-            }
-            else
-            {
-                title = "not found";
-
-            }
-
-
-            Cursor addressCursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " =?", new String[]{id}, null);
-            if(addressCursor.moveToNext())
-            {
-                adresse=addressCursor.getString(addressCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS));
-                Log.i(TAG,adresse);
-                addressCursor.close();
-            }
-            else
-            {
-                Log.i(TAG,"no address");
-                adresse = "not provided";
-            }
-
-    }
-        BusniessCard contact = new BusniessCard();
-        contact.setmAddress(adresse);
-        contact.setmEmail(email);
-        contact.setmJobTitle(title);
-        contact.setmName(displayName);
-        contact.setmPhoneNumber(mobilePhone);
-        return contact ;
-    }
 
     private void contactPicked(Intent data) {
-        String id = "";
-        String adresse = "";
+        String id="";
         String displayName = "";
+        String nickName = "";
+        String homePhone = "";
         String mobilePhone = "";
         String email = "";
-        String title = "";
+        String workPhone = "";
         String photoPath = ""; //+ R.drawable.blank;
         byte[] photoByte = null;
-        BusniessCard contact = new BusniessCard();
+        String homeEmail = "";
+        String workEmail = "";
+        String companyName = "";
+        String title = "";
+
         Uri uri = data.getData();
-        Cursor cursor = this.getContentResolver().query(uri,null, null, null, null);
-        if (cursor.moveToFirst()) {
-            id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            Log.i("import", id);
-            displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            Log.i("avant get contact info ",displayName);
-            //contact = getContactInfo(getApplicationContext(), id);
-            {
-                // to get data you need to query commonkinds
-                Cursor emailCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ? ", new String[]{id}, null);
+        Cursor dataCursor = this.getContentResolver().query(uri,null, null, null, null);
+        if (dataCursor.moveToFirst()) {
+            // Getting Display Name
+            displayName = dataCursor
+                    .getString(dataCursor
+                            .getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
+            id = dataCursor
+                    .getString(dataCursor
+                            .getColumnIndex(ContactsContract.Data._ID));
 
-                if(emailCursor.moveToFirst())
-                {
-                    //emailCursor.moveToNext();
-                    email = emailCursor.getString(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-                    Log.i(TAG,email);
+            do {
+                Log.d("1","2");
+
+                // Getting NickName
+                if (dataCursor
+                        .getString(
+                                dataCursor
+                                        .getColumnIndex("mimetype"))
+                        .equals(ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE))
+                    nickName = dataCursor.getString(dataCursor
+                            .getColumnIndex("data1"));
+                if (dataCursor
+                        .getString(
+                                dataCursor
+                                        .getColumnIndex("mimetype"))
+                        .equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
+                    switch (dataCursor.getInt(dataCursor
+                            .getColumnIndex("data2"))) {
+                        case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+                            homePhone = dataCursor.getString(dataCursor
+                                    .getColumnIndex("data1"));
+                            break;
+                        case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+                            mobilePhone = dataCursor
+                                    .getString(dataCursor
+                                            .getColumnIndex("data1"));
+                            break;
+                        case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+                            workPhone = dataCursor.getString(dataCursor
+                                    .getColumnIndex("data1"));
+                            break;
+                    }
                 }
-                else
-                    email = "not found";
-                Cursor phoneCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null
-                        , ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ", new String[]{id}, null);
-
-                if(phoneCursor.moveToFirst())
-                {
-                    //phoneCursor.moveToNext();
-                    mobilePhone = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    phoneCursor.moveToNext();
-                    //String organization = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
-                    // String website = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Website.URL));
-                    Log.i(TAG,mobilePhone);
-                    phoneCursor.close();
+                // Getting EMails
+                if (dataCursor
+                        .getString(
+                                dataCursor
+                                        .getColumnIndex("mimetype"))
+                        .equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
+                    switch (dataCursor.getInt(dataCursor
+                            .getColumnIndex("data2"))) {
+                        case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
+                            homeEmail = dataCursor.getString(dataCursor
+                                    .getColumnIndex("data1"));
+                            break;
+                        case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
+                            workEmail = dataCursor.getString(dataCursor
+                                    .getColumnIndex("data1"));
+                            break;
+                    }
                 }
-                else
-                    mobilePhone = "not found";
-
-                String orgWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-                String[] orgWhereParams = new String[]{id,
-                        ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
-                Cursor orgCursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
-                        null, orgWhere, orgWhereParams, null);
-
-
-                if(orgCursor.moveToNext())
-                {
-
-                    title = orgCursor.getString(orgCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
-                    Log.i(TAG,title);
-                    orgCursor.close();
+                if (dataCursor
+                        .getString(
+                                dataCursor
+                                        .getColumnIndex("mimetype"))
+                        .equals(ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)) {
+                    companyName = dataCursor.getString(dataCursor
+                            .getColumnIndex("data1"));
+                    title = dataCursor.getString(dataCursor
+                            .getColumnIndex("data4"));
                 }
-                else
-                {
-                    title = "not found";
+                if (dataCursor
+                        .getString(
+                                dataCursor
+                                        .getColumnIndex("mimetype"))
+                        .equals(ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)) {
+                    photoByte = dataCursor.getBlob(dataCursor
+                            .getColumnIndex("data15"));
 
-                }
+                    if (photoByte != null) {
+                        Bitmap bitmap = BitmapFactory
+                                .decodeByteArray(photoByte, 0,
+                                        photoByte.length);
 
+                        // Getting Caching directory
+                        File cacheDirectory = getBaseContext()
+                                .getCacheDir();
 
-                Cursor addressCursor = getContentResolver().query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, null,
-                        ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " =?", new String[]{id}, null);
-                if(addressCursor.moveToNext())
-                {
-                    adresse=addressCursor.getString(addressCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS));
-                    Log.i(TAG,adresse);
-                    addressCursor.close();
-                }
-                else
-                {
-                    Log.i(TAG,"no address");
-                    adresse = "not provided";
-                }
+                        // Temporary file to store the contact image
+                        File tmpFile = new File(
+                                cacheDirectory.getPath() + "/wpta_"
+                                        + id + ".png");
 
-            }
-            Log.i("import", "after database call");
-        }
-        /*if (cursor.moveToFirst()) {
-            if (cursor
-                    .getString(
-                            cursor
-                                    .getColumnIndex("mimetype"))
-                    .equals(ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)) {
-                photoByte = cursor.getBlob(cursor
-                        .getColumnIndex("data15"));
+                        // The FileOutputStream to the temporary
+                        // file
+                        try {
+                            FileOutputStream fOutStream = new FileOutputStream(
+                                    tmpFile);
 
-                if (photoByte != null) {
-                    Bitmap bitmap = BitmapFactory
-                            .decodeByteArray(photoByte, 0,
-                                    photoByte.length);
+                            // Writing the bitmap to the temporary
+                            // file as png file
+                            bitmap.compress(
+                                    Bitmap.CompressFormat.PNG, 100,
+                                    fOutStream);
 
-                    // Getting Caching directory
-                    File cacheDirectory = getBaseContext()
-                            .getCacheDir();
+                            // Flush the FileOutputStream
+                            fOutStream.flush();
 
-                    // Temporary file to store the contact image
-                    File tmpFile = new File(
-                            cacheDirectory.getPath() + "/wpta_"
-                                    + id + ".png");
+                            // Close the FileOutputStream
+                            fOutStream.close();
 
-                    // The FileOutputStream to the temporary
-                    // file
-                    try {
-                        FileOutputStream fOutStream = new FileOutputStream(
-                                tmpFile);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-                        // Writing the bitmap to the temporary
-                        // file as png file
-                        bitmap.compress(
-                                Bitmap.CompressFormat.PNG, 100,
-                                fOutStream);
-
-                        // Flush the FileOutputStream
-                        fOutStream.flush();
-
-                        // Close the FileOutputStream
-                        fOutStream.close();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        photoPath = tmpFile.getPath();
                     }
 
-                    photoPath = tmpFile.getPath();
                 }
-                contact.setmPicture(photoPath);
 
+
+            } while (dataCursor.moveToNext());
+        }
+
+
+        if (mobilePhone == null || mobilePhone.equals("")) {
+            if (workPhone != null && !workPhone.equals(""))  {
+                mobilePhone = workPhone ;
+            } else if(homePhone != null && !homePhone.equals("")) {
+                mobilePhone = homePhone;
+            }else{
+                mobilePhone = "not found";
             }
-        }*/
+        }
+        if (nickName != null && !nickName.equals("")) {
+            displayName += " " + nickName;
+        }
+        if(displayName == null || displayName.equals("")){
+            displayName = "not found";
+        }
+        if (workEmail != null && !workEmail.equals("")) {
+            email = workEmail;
+        }else if (homeEmail != null && !homeEmail.equals("")) {
+            email = homeEmail ;
+        }else{
+            email = "not found";
+        }
+        if (title == null || title.equals("")) {
+            title = "not found";
+        }
+        Log.d("nick name :",nickName);
+        Log.d("displayName :",displayName);
+
+        Log.d("phone 1 ",mobilePhone);
+        Log.d("phone 2 ",workPhone);
+
+        Log.d("email 1",homeEmail);
+        Log.d("email 2",workEmail);
+
+        Log.d("job",title);
 
         SqlLiteConnection sq = new SqlLiteConnection(getApplicationContext());
-        sq.insertContact(id,displayName,title,mobilePhone,adresse,email);
+        sq.insertContact(id,displayName,title,mobilePhone,"not found",email,photoPath);
     }
 }

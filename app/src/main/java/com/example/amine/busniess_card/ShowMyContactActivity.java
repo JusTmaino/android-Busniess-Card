@@ -1,9 +1,17 @@
 package com.example.amine.busniess_card;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.zxing.WriterException;
+
+import java.io.File;
 
 /**
  * Created by Amine on 30/05/2017.
@@ -11,7 +19,8 @@ import android.widget.TextView;
 
 public class ShowMyContactActivity extends Activity {
     TextView name ,job, phone, adress , email;
-    String nom ,title,tel,adr,mail ;
+    ImageView qr ,pictureView;
+    String nom ,title,tel,adr,mail,details,picture ;
     BusniessCard bc ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +31,18 @@ public class ShowMyContactActivity extends Activity {
         tel = getIntent().getStringExtra("phone");
         adr = getIntent().getStringExtra("adresse");
         mail = getIntent().getStringExtra("email");
+        details = getIntent().getStringExtra("details");
+        picture = getIntent().getStringExtra("picture");
+        Bitmap bitMatrix = null;
+        try {
+            bitMatrix = QRCodeHandler.generateMatrix(details);
 
-
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        qr = (ImageView) findViewById(R.id.contactQR);
+        qr.setImageBitmap(bitMatrix);
+        pictureView =(ImageView) findViewById(R.id.contactImage);
         name = (TextView) findViewById(R.id.contactName);
         job = (TextView) findViewById(R.id.contactJob);
         phone = (TextView) findViewById(R.id.contactPhone);
@@ -34,5 +53,16 @@ public class ShowMyContactActivity extends Activity {
         phone.setText(tel);
         adress.setText(adr);
         email.setText(mail);
+        Log.d("picture ",picture);
+        File imgFile = new  File(picture);
+
+        if(imgFile.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+            pictureView.setImageBitmap(myBitmap);
+
+        }
+
     }
 }

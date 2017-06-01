@@ -59,6 +59,8 @@ public class ContactListActivity extends Activity {
                 intent.putExtra("adresse", bcs.get(position).getmAddress());
                 intent.putExtra("email", bcs.get(position).getmEmail());
                 intent.putExtra("phone", bcs.get(position).getmPhoneNumber());
+                intent.putExtra("details", bcs.get(position).getDetails());
+                intent.putExtra("picture", bcs.get(position).getmPicture());
                     startActivity(intent);
 
             }

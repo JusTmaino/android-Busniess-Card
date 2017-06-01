@@ -35,6 +35,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     public static final String mobilePhone = "MOBILEPHONE";
     public static final String adressContact = "ADRESS";
     public static final String emailContact = "EMAIL";
+    public static final String pictureContact = "PICTURE";
 
 
     public SqlLiteConnection(Context context) {
@@ -45,7 +46,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE "+TABLE_NAME+" ("+id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+username+" TEXT,"+password+" TEXT,"+job+" TEXT,"+phone+" INTEGER,"+adress+" TEXT,"+email+" TEXT,"+picture+" TEXT)");
-        db.execSQL("CREATE TABLE "+TABLE_CONTACTS+" ("+idContact+" TEXT PRIMARY KEY,"+nameContact+" TEXT,"+jobContact+" TEXT,"+mobilePhone+" INTEGER,"+adressContact+" TEXT,"+emailContact+" TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_CONTACTS+" ("+idContact+" TEXT PRIMARY KEY,"+nameContact+" TEXT,"+jobContact+" TEXT,"+mobilePhone+" INTEGER,"+adressContact+" TEXT,"+emailContact+" TEXT,"+pictureContact+" TEXT)");
 
     }
 
@@ -141,7 +142,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         return bc;
     }
 
-    public boolean insertContact(String idContact1 , String nameContact1 , String jobContact1 , String mobilePhone1 , String adressContact1 , String emailContact1)
+    public boolean insertContact(String idContact1 , String nameContact1 , String jobContact1 , String mobilePhone1 , String adressContact1 , String emailContact1 , String pictureContact1)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentVal = new ContentValues();
@@ -151,6 +152,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         contentVal.put(mobilePhone , mobilePhone1);
         contentVal.put(adressContact , adressContact1);
         contentVal.put(emailContact , emailContact1);
+        contentVal.put(pictureContact , pictureContact1);
         long result = db.insert(TABLE_CONTACTS , null , contentVal);
 
         if(result== -1) {
@@ -165,7 +167,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(SqlLiteConnection.TABLE_CONTACTS,
                 new String[]{   SqlLiteConnection.nameContact, SqlLiteConnection.jobContact,SqlLiteConnection.mobilePhone,
-                        SqlLiteConnection.adressContact, SqlLiteConnection.emailContact},
+                        SqlLiteConnection.adressContact, SqlLiteConnection.emailContact,SqlLiteConnection.pictureContact},
                         null, null, null, null, null);
         // Cursor cursor = db.rawQuery("select All from "+TABLE_CONTACTS, null);
 
@@ -179,6 +181,7 @@ public final class SqlLiteConnection extends SQLiteOpenHelper {
                 bc.setmJobTitle(cursor.getString(cursor.getColumnIndex(jobContact)));
                 bc.setmAddress(cursor.getString(cursor.getColumnIndex(adressContact)));
                 bc.setmPhoneNumber(cursor.getString(cursor.getColumnIndex(mobilePhone)));
+                bc.setmPicture(cursor.getString(cursor.getColumnIndex(pictureContact)));
                 bcs.add(bc);
                 Log.i(bc.getDetails(), "getContacts: ");
             }while (cursor.moveToNext());
