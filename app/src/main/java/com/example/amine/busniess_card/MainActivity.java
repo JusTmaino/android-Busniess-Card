@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent launchMenuActivity = new Intent(MainActivity.this, MenuActivity.class);
                             launchMenuActivity.putExtra("USERNAME", username.getText().toString());
                             startActivity(launchMenuActivity);
-                            Toast.makeText(MainActivity.this, "Logging In", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Logged In", Toast.LENGTH_LONG).show();
                         }
                         else
                             Toast.makeText(MainActivity.this,"Logging Error",Toast.LENGTH_LONG).show();

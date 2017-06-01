@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import com.example.amine.busniess_card.BusniessCard ;
@@ -52,6 +54,7 @@ public class ContactImportActivity extends AppCompatActivity {
             switch (requestCode) {
                 case RESULT_PICK_CONTACT:
                     contactPicked(data);
+                    Toast.makeText(ContactImportActivity.this, "Contact Imported", Toast.LENGTH_LONG).show();
                     break;
             }
         } else {
