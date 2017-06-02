@@ -13,10 +13,6 @@ import com.google.zxing.WriterException;
 
 import java.io.File;
 
-/**
- * Created by Amine on 30/05/2017.
- */
-
 public class ShowMyContactActivity extends Activity {
     TextView name ,job, phone, adress , email;
     ImageView qr ,pictureView;

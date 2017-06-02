@@ -17,10 +17,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.example.amine.busniess_card.BusniessCard.getCardObject;
 
-/**
- * Created by Amine on 29/05/2017.
- */
-
 public class ScanQRCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mScannerView;

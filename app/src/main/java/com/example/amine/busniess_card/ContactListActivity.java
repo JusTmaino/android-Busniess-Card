@@ -27,11 +27,6 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-
-/**
- * Created by Amine on 28/05/2017.
- */
-
 public class ContactListActivity extends AppCompatActivity {
 
     ArrayList<String> bcDetails ;

@@ -11,10 +11,6 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Amine on 27/05/2017.
- */
-
 public final class SqlLiteConnection extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "BussniessCard.db";

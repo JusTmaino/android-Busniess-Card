@@ -9,10 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-/**
- * Created by Amine on 30/05/2017.
- */
-
 public class MenuActivity extends AppCompatActivity {
 
     Button importContacts;

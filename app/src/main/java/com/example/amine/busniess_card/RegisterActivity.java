@@ -9,10 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * Created by Amine on 28/05/2017.
- */
-
 public class RegisterActivity extends AppCompatActivity {
 
     SqlLiteConnection cn;

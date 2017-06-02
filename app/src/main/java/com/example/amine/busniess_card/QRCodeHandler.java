@@ -1,9 +1,5 @@
 package com.example.amine.busniess_card;
 
-/**
- * Created by Amine on 30/05/2017.
- */
-
 import android.graphics.Bitmap;
 import android.graphics.Color;
 

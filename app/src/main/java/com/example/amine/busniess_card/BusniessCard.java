@@ -2,9 +2,6 @@ package com.example.amine.busniess_card;
 
 import android.content.Context;
 
-/**
- * Created by Amine on 30/05/2017.
- */
 
 public class BusniessCard {
 
